@@ -1,0 +1,51 @@
+# Patrick Jane edit'i: "Gülümsemenin Arkası" (bkz. PLAN.md)
+#
+# Klip satırı:  dosya | başlangıç | süre | efekt | yazı
+#   başlangıç: kaynaktaki zaman, ör. 12:31 ya da 0:12:31.5
+#   süre:      4b = 4 vuruş (bpm'den hesaplanır), 2.5 = 2.5 saniye
+#   efekt:     bw, sepia, dark, slow, zoom, flash, fadein, fadeout (+ ile birleştir, yoksa -)
+#   yazı:      isteğe bağlı, videonun alt kısmına yazılır
+#
+# Aşağıdaki başlangıç zamanları yer tutucudur (0:00:00). Kendi bölüm dosyalarında
+# sahneyi bulup gerçek zamanı yaz. Dosya adlarını da kendi dosyalarına göre değiştir.
+
+muzik = muzik/sarki.mp3
+muzik_baslangic = 0:00    # şarkının hangi saniyesinden başlasın
+bpm = 120                 # seçtiğin şarkının BPM'i
+format = dikey            # dikey | yatay | kare
+fps = 30
+# font = /yol/font.ttf    # boş bırakılırsa sistemdeki bir font kullanılır
+
+# --- 1. Giriş: Maske (8 vuruş) ---
+klipler/s01e01.mkv | 0:00:00 | 4b | dark+fadein | herkes gülümsemesini gördü
+klipler/s01e02.mkv | 0:00:00 | 4b | dark
+
+# --- 2. Numaralar (16 vuruş, 2'şer) ---
+klipler/s01e03.mkv | 0:00:00 | 2b | - | kimse arkasındakini görmedi
+klipler/s02e05.mkv | 0:00:00 | 2b | -
+klipler/s02e10.mkv | 0:00:00 | 2b | -
+klipler/s03e04.mkv | 0:00:00 | 2b | -
+klipler/s03e12.mkv | 0:00:00 | 2b | -
+klipler/s04e02.mkv | 0:00:00 | 2b | -
+klipler/s04e15.mkv | 0:00:00 | 2b | -
+klipler/s05e03.mkv | 0:00:00 | 2b | -
+
+# --- 3. Geçmiş (8 vuruş) ---
+klipler/s01e01.mkv | 0:00:00 | 4b | sepia+slow | bir gülen yüz. her şeyi aldı.
+klipler/s02e01.mkv | 0:00:00 | 4b | bw+slow
+
+# --- 4. Drop: Red John (16 vuruş) ---
+klipler/s03e24.mkv | 0:00:00 | 1b | flash
+klipler/s03e24.mkv | 0:00:00 | 1b | flash
+klipler/s03e24.mkv | 0:00:00 | 1b | flash
+klipler/s03e24.mkv | 0:00:00 | 1b | flash
+klipler/s05e22.mkv | 0:00:00 | 2b | dark
+klipler/s05e22.mkv | 0:00:00 | 2b | dark
+klipler/s06e08.mkv | 0:00:00 | 1b | flash
+klipler/s06e08.mkv | 0:00:00 | 1b | flash
+klipler/s06e08.mkv | 0:00:00 | 2b | dark
+klipler/s06e08.mkv | 0:00:00 | 4b | zoom+dark
+
+# --- 5. Çıkış: Gerçek gülümseme (10 vuruş) ---
+klipler/s06e22.mkv | 0:00:00 | 4b | fadein
+klipler/s07e13.mkv | 0:00:00 | 6b | fadeout | ve sonunda gerçekten gülümsedi
