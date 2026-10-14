@@ -40,7 +40,9 @@ import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -406,6 +408,41 @@ fun LabeledSlider(
             ),
         )
     }
+}
+
+/**
+ * Slider for a saved setting: follows the pointer locally and saves once on release,
+ * so a drag does not write settings to disk on every frame.
+ */
+@Composable
+fun PersistedSlider(
+    title: String,
+    value: Float,
+    valueText: (Float) -> String,
+    onCommit: (Float) -> Unit,
+    valueRange: ClosedFloatingPointRange<Float>,
+    modifier: Modifier = Modifier,
+    steps: Int = 0,
+    enabled: Boolean = true,
+    accent: Color? = null,
+) {
+    var dragging by remember { mutableStateOf<Float?>(null) }
+    val shown = dragging ?: value
+    LabeledSlider(
+        title = title,
+        valueText = valueText(shown),
+        value = shown,
+        onValueChange = { dragging = it },
+        valueRange = valueRange,
+        modifier = modifier,
+        steps = steps,
+        enabled = enabled,
+        onValueChangeFinished = {
+            dragging?.let(onCommit)
+            dragging = null
+        },
+        accent = accent,
+    )
 }
 
 @Composable

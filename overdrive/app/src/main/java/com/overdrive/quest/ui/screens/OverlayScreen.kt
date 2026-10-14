@@ -46,7 +46,7 @@ import com.overdrive.quest.ui.components.ButtonStyle
 import com.overdrive.quest.ui.components.ChipGroup
 import com.overdrive.quest.ui.components.GlassCard
 import com.overdrive.quest.ui.components.IconBadge
-import com.overdrive.quest.ui.components.LabeledSlider
+import com.overdrive.quest.ui.components.PersistedSlider
 import com.overdrive.quest.ui.components.NeonButton
 import com.overdrive.quest.ui.components.NeonChip
 import com.overdrive.quest.ui.components.Pill
@@ -137,19 +137,19 @@ fun OverlayScreen(vm: MainViewModel) {
                     onSelect = { c -> vm.setOverlay { it.copy(corner = c, x = 40, y = 40) } },
                 )
                 Spacer(Modifier.height(16.dp))
-                LabeledSlider(
+                PersistedSlider(
                     title = stringResource(R.string.overlay_opacity),
-                    valueText = "${(overlay.opacity * 100).roundToInt()}%",
+                    valueText = { "${(it * 100).roundToInt()}%" },
                     value = overlay.opacity,
-                    onValueChange = { v -> vm.setOverlay { it.copy(opacity = (v * 20).roundToInt() / 20f) } },
+                    onCommit = { v -> vm.setOverlay { it.copy(opacity = (v * 20).roundToInt() / 20f) } },
                     valueRange = 0.3f..1f,
                     steps = 13,
                 )
-                LabeledSlider(
+                PersistedSlider(
                     title = stringResource(R.string.overlay_scale),
-                    valueText = "%.2f×".format(overlay.scale),
+                    valueText = { "%.2f×".format(it) },
                     value = overlay.scale,
-                    onValueChange = { v -> vm.setOverlay { it.copy(scale = (v * 20).roundToInt() / 20f) } },
+                    onCommit = { v -> vm.setOverlay { it.copy(scale = (v * 20).roundToInt() / 20f) } },
                     valueRange = 0.6f..1.8f,
                     steps = 23,
                 )

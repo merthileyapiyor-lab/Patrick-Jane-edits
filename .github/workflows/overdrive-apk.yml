@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - "overdrive/**"
+      - "!overdrive/**/*.md"
       - ".github/workflows/overdrive-apk.yml"
   workflow_dispatch:
 
@@ -44,6 +45,17 @@ jobs:
           cp "$APK" dist/Overdrive.apk
           echo "path=overdrive/dist/Overdrive.apk" >> "$GITHUB_OUTPUT"
           ls -la dist
+
+      - name: Verify APK
+        run: |
+          BT=$(ls -d "$ANDROID_HOME"/build-tools/* | sort -V | tail -n 1)
+          "$BT/aapt2" dump badging dist/Overdrive.apk | grep -E "^package:|sdkVersion:|targetSdkVersion:|application-label:"
+          "$BT/apksigner" verify --print-certs dist/Overdrive.apk | head -n 2
+          # Turkish translation survived resource shrinking
+          "$BT/aapt2" dump configurations dist/Overdrive.apk | grep -qx "tr"
+          # R8 kept the Shizuku method that ShellManager calls through reflection
+          unzip -p dist/Overdrive.apk 'classes*.dex' | grep -aq newProcess
+          echo "APK OK"
 
       - uses: actions/upload-artifact@v4
         with:

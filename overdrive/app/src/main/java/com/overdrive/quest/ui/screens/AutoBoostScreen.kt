@@ -53,7 +53,7 @@ import com.overdrive.quest.ui.components.AnimatedNumber
 import com.overdrive.quest.ui.components.ChipGroup
 import com.overdrive.quest.ui.components.GlassCard
 import com.overdrive.quest.ui.components.IconBadge
-import com.overdrive.quest.ui.components.LabeledSlider
+import com.overdrive.quest.ui.components.PersistedSlider
 import com.overdrive.quest.ui.components.NeonButton
 import com.overdrive.quest.ui.components.ButtonStyle
 import com.overdrive.quest.ui.components.NeonProgress
@@ -171,21 +171,21 @@ fun AutoBoostScreen(vm: MainViewModel) {
                 )
                 Spacer(Modifier.height(14.dp))
                 if (auto.thermalSource == ThermalSource.SOC) {
-                    LabeledSlider(
+                    PersistedSlider(
                         title = stringResource(R.string.auto_limit),
-                        valueText = "${auto.socLimitC}°C",
+                        valueText = { "${it.roundToInt()}°C" },
                         value = auto.socLimitC.toFloat(),
-                        onValueChange = { v -> vm.setAuto { it.copy(socLimitC = v.roundToInt()) } },
+                        onCommit = { v -> vm.setAuto { it.copy(socLimitC = v.roundToInt()) } },
                         valueRange = 65f..95f,
                         steps = 29,
                         accent = palette.heat((auto.socLimitC - 65f) / 30f),
                     )
                 } else {
-                    LabeledSlider(
+                    PersistedSlider(
                         title = stringResource(R.string.auto_limit),
-                        valueText = "${auto.batteryLimitC}°C",
+                        valueText = { "${it.roundToInt()}°C" },
                         value = auto.batteryLimitC.toFloat(),
-                        onValueChange = { v -> vm.setAuto { it.copy(batteryLimitC = v.roundToInt()) } },
+                        onCommit = { v -> vm.setAuto { it.copy(batteryLimitC = v.roundToInt()) } },
                         valueRange = 36f..50f,
                         steps = 13,
                         accent = palette.heat((auto.batteryLimitC - 36f) / 14f),
@@ -203,11 +203,11 @@ fun AutoBoostScreen(vm: MainViewModel) {
                     icon = Icons.Rounded.BatteryAlert,
                 )
                 if (auto.batteryGuard) {
-                    LabeledSlider(
+                    PersistedSlider(
                         title = stringResource(R.string.auto_battery_threshold),
-                        valueText = "${auto.batteryGuardPct}%",
+                        valueText = { "${(it / 5f).roundToInt() * 5}%" },
                         value = auto.batteryGuardPct.toFloat(),
-                        onValueChange = { v -> vm.setAuto { it.copy(batteryGuardPct = (v / 5f).roundToInt() * 5) } },
+                        onCommit = { v -> vm.setAuto { it.copy(batteryGuardPct = (v / 5f).roundToInt() * 5) } },
                         valueRange = 5f..50f,
                         steps = 8,
                     )
