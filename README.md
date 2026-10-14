@@ -78,3 +78,7 @@ klipler/s01e01.mkv | 0:12:31 | 4b | dark+fadein | herkes gülümsemesini gördü
 - Kesim noktaları kareye kümülatif olarak yuvarlanır, bu yüzden uzun edit'lerde bile müzikle senkron kayması olmaz.
 - Bir klibin kaynağı istenen süreye yetmezse script uyarır ve son kareyi dondurarak süreyi tamamlar.
 - Paylaşırken platformlar telifli müziği sessize alabilir. Uygulamanın kendi müzik kütüphanesinden aynı şarkıyı eklemek genelde daha sorunsuzdur.
+
+## Overdrive (Quest uygulaması)
+
+Bu depoda ayrıca Meta Quest 3 için bir performans ve overclock uygulaması var: [overdrive/](overdrive/README.md). APK'sı GitHub Actions'ta derlenir.
