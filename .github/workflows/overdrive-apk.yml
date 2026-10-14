@@ -1,0 +1,65 @@
+name: Overdrive APK
+
+on:
+  push:
+    paths:
+      - "overdrive/**"
+      - ".github/workflows/overdrive-apk.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: overdrive-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: overdrive
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: Unit tests
+        run: ./gradlew --no-daemon testReleaseUnitTest
+
+      - name: Build release APK
+        run: ./gradlew --no-daemon assembleRelease
+
+      - name: Collect APK
+        id: apk
+        run: |
+          APK=$(ls app/build/outputs/apk/release/*.apk | head -n 1)
+          mkdir -p dist
+          cp "$APK" dist/Overdrive.apk
+          echo "path=overdrive/dist/Overdrive.apk" >> "$GITHUB_OUTPUT"
+          ls -la dist
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Overdrive-apk
+          path: ${{ steps.apk.outputs.path }}
+          if-no-files-found: error
+
+      - name: Publish rolling release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BRANCH: ${{ github.ref_name }}
+        run: |
+          TAG="overdrive-latest"
+          gh release delete "$TAG" --yes --cleanup-tag 2>/dev/null || true
+          gh release create "$TAG" dist/Overdrive.apk \
+            --prerelease \
+            --target "$GITHUB_SHA" \
+            --title "Overdrive (latest build)" \
+            --notes "Built from \`$BRANCH\` @ ${GITHUB_SHA::7}. Sideload Overdrive.apk with SideQuest or \`adb install -r Overdrive.apk\`."
