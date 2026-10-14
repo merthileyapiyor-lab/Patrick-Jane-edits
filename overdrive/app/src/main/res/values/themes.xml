@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <style name="Theme.Overdrive" parent="android:Theme.Material.NoActionBar">
-        <item name="android:windowBackground">@color/od_background</item>
-        <item name="android:statusBarColor">@color/od_background</item>
-        <item name="android:navigationBarColor">@color/od_background</item>
-        <item name="android:colorAccent">@color/od_accent</item>
-    </style>
-</resources>
